@@ -1,0 +1,74 @@
+{% extends 'layout.html' %}
+
+{% block title %} Портфолио {% endblock %}
+
+{% block head %}
+<h1>Добро пожаловать!</h1>
+<h2>Здесь вы можете лучше узнать меня как специалиста,<br> посмотреть мои
+    проекты, а так-же связаться со мной.
+</h2>
+    {%endblock%}
+
+{% block content %}
+
+<img src="{{ media.1.url }}">
+
+<br>
+<p> "Привет! Меня зовут Мурзик. Ты, наверное, удивлен, что я могу говорить.<br>
+    Я один из тех редких котов, которые умеют общаться с людьми. Моя история довольно интересная.
+</p>
+<p>
+Я родился в небольшом городе, где меня нашла моя нынешняя хозяйка. <br>Она
+        всегда верила, что коты обладают магическими способностями, и однажды, когда я был еще котенком, она нашла древнюю книгу с заклинаниями. <br>Она попробовала одно из них на мне, и вот, теперь я могу говорить!
+</p><p>
+Я люблю рассказывать истории и делиться своей мудростью. Жизнь кота удивительно интересна и полна приключений.<br> Мы, коты, видим и чувствуем мир совсем иначе, чем люди.<br> Я могу чувствовать настроение людей, предсказывать погоду и даже видеть вещи, которые невидимы для человеческого глаза.
+</p><p>
+Мои любимые занятия включают охоту на мышей (да, это все еще в моей природе), прогулки по ночным крышам и, конечно же, сон на самом теплом и мягком месте в доме.<br> Иногда я даже помогал своей хозяйке находить потерянные вещи, ведь у меня очень острый нюх.
+</p><p>
+Но больше всего мне нравится общаться с людьми и делиться своими наблюдениями.<br> Ведь не каждый день можно встретить говорящего кота, верно?<br> Так что, если у тебя есть вопросы или тебе нужно что-то рассказать, я всегда рад поболтать!"
+
+ </p>
+<br>
+<h2>А здесь ты можешь посмотреть на мои проекты:</h2>
+
+<div id="carouselExampleIndicators" class="carousel slide">
+  <div class="carousel-indicators">
+    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+  </div>
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <img src="{{ media.project.url }}" class="d-block w-100" alt="...">
+    </div>
+    <div class="carousel-item">
+      <img src="{{ media.clu.url }}" class="d-block w-100" alt="...">
+    </div>
+    <div class="carousel-item">
+      <img src="..." class="d-block w-100" alt="...">
+    </div>
+  </div>
+  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>
+
+
+<p>Здесь расположены мои проекты, которых пока нет..<br>
+Давайте сделаем вид, будто они есть ^_^</p>
+
+<h2> Отправить мне сообщение можно </h2><br>
+<a href="{% url 'contact' %}" class="btn btn-primary"> здесь</a>
+<br><br><br>
+
+
+
+{% endblock %}
+
+{% block foot %} <div
+        class="border border-success p-2 mb-2 border-opacity-25"><small> С любовью<br> Ваш  Мурзик<br> "© 2024" </small></div>{% endblock %}
