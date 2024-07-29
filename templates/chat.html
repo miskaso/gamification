@@ -14,9 +14,6 @@
 </form>
 <br><br>
 {% else %}
-{% if error %}
-<p style="color: red;">{{ error }}</p>
-{% endif %}
 <form method="post" action="{% url 'login' %}">
     {% csrf_token %}
     <div>

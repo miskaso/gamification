@@ -3,10 +3,22 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.views import PasswordResetForm
 from django.contrib.auth.decorators import login_required
 from .forms import CustomUserCreationForm, CustomAuthenticationForm, CustomRecoveryForm
-from .models import Media
+from .models import Media, VisitedPage
 from .forms import ContactForm
 
+
+
 # Create your views here.
+
+@login_required
+def set_cookie(request, response):
+    if request.COOKIES.get('visit_count'):
+        visit_count = int(request.COOKIES.get('visit_count')) + 1
+    else:
+        visit_count = 1
+    response.set_cookie('visit_count', str(visit_count))
+
+    return response
 
 
 def index(req):
@@ -14,7 +26,10 @@ def index(req):
     media = dict()
     for i in med:
         media[i.name] = i.img
-    return render(req, 'index.html', {'media': media})
+
+    response = render(req, 'index.html', {'media': media})
+    response = set_cookie(req, response)
+    return response
 
 
 def contact(req):
@@ -52,15 +67,27 @@ def login_view(request):
     return render(request, 'login.html', {'form': form})
 
 
-def user_logout(request):
-    logout(request)
-    return redirect('login')
-
-
 def chat(req):
     return render(req, 'chat.html')
 
 
+@login_required()
 class RecoveryPassword(PasswordResetForm):
     recovery = CustomRecoveryForm
     template_name = 'recovery.html'
+
+
+def user_logout(request):
+    if request.user.is_authenticated:
+        visited_pages = []
+        visited_cookies = request.COOKIES.get('visit_count')
+        if visited_cookies:
+            visited_pages = visited_cookies.split(',')
+            for page in visited_pages:
+                VisitedPage.objects.create(user=request.user, page_name=page)
+            logout(request)
+            response = redirect('login')
+            response.delete_cookie('visit_count')
+            return response
+    else:
+        return redirect('login')

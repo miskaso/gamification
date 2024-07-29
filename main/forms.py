@@ -27,3 +27,5 @@ class CustomAuthenticationForm(AuthenticationForm):
 class CustomRecoveryForm(PasswordResetForm):
     captcha = ReCaptchaField(widget=ReCaptchaV2Checkbox)
     email = forms.EmailField(label="Email", max_length=255)
+
+
