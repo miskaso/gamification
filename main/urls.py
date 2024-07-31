@@ -10,7 +10,8 @@ urlpatterns = [
     path('login/', views.login_view, name='login'),
     path('register/', views.register_view, name='register'),
     path('chat/', views.chat, name='chat'),
-    path('recovery/', views.RecoveryPassword, name='recovery'),
+    path('recovery/', views.recovery, name='recovery'),
+    path('delete/', views.delete_message, name='delete')
 
 ]
 

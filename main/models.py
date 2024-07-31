@@ -47,3 +47,11 @@ class VisitedPage(models.Model):
     def __str__(self):
         return f"{self.user.username} visited {self.page_name} at {self.timestamp}"
 
+
+class Chat(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    message = models.TextField()
+    date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'Сообщение от {self.user.username} в {self.date}'

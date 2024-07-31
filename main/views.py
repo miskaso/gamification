@@ -1,14 +1,15 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.views import PasswordResetForm
 from django.contrib.auth.decorators import login_required
-from .forms import CustomUserCreationForm, CustomAuthenticationForm, CustomRecoveryForm
-from .models import Media, VisitedPage
+from .forms import (CustomUserCreationForm, CustomAuthenticationForm,
+                    CustomRecoveryForm, ShowChat)
+from .models import Media, VisitedPage, Chat
 from .forms import ContactForm
-
-
+from django.http import HttpResponse
 
 # Create your views here.
+
 
 @login_required
 def set_cookie(request, response):
@@ -37,7 +38,7 @@ def contact(req):
         form = ContactForm(req.POST)
         if form.is_valid():
             form.save()
-            return redirect('../chat.html')
+            return redirect('chat')
     else:
         form = ContactForm()
     return render(req, 'message.html', {'form': form})
@@ -67,14 +68,13 @@ def login_view(request):
     return render(request, 'login.html', {'form': form})
 
 
-def chat(req):
-    return render(req, 'chat.html')
-
-
-@login_required()
-class RecoveryPassword(PasswordResetForm):
-    recovery = CustomRecoveryForm
-    template_name = 'recovery.html'
+def recovery(req):
+    form = CustomRecoveryForm()
+    if form.is_valid():
+        text = 'Вы успешно восстановили пароль ^_^'
+        return HttpResponse(text)
+    else:
+        return render(req, 'recovery.html', {'form': form})
 
 
 def user_logout(request):
@@ -91,3 +91,29 @@ def user_logout(request):
             return response
     else:
         return redirect('login')
+
+
+@login_required
+def chat(req):
+    show = Chat.objects.all().order_by('-date')
+    med = get_object_or_404(Media, name='er')
+    media = med.img
+    if req.method == 'POST':
+        form = ShowChat(req.POST)
+        if form.is_valid():
+            chat = form.save(commit=False)
+            chat.user = req.user
+            chat.save()
+            return redirect('../chat')
+    else:
+        form = ShowChat()
+    return render(req, 'chat.html', {'show': show, 'form': form, 'media': media})
+
+
+@login_required
+def delete_message(req):
+    if req.method == 'POST':
+        mes_id = req.POST.get('id')
+        chat = get_object_or_404(Chat, id=mes_id)
+        chat.delete()
+        return redirect('../chat')

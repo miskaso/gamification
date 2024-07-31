@@ -10,9 +10,42 @@
 <p>Привет, {{ user.username }}!</p>
 <form method="post" action="{% url 'logout' %}">
     {% csrf_token %}
-    <button type="submit">Выйти</button>
+    <small><button type="submit">Выйти</button></small>
 </form>
 <br><br>
+
+<form method="POST" action="{% url 'chat' %}">
+    {% csrf_token %}
+        {{ form.as_p }}
+    <button type="submit">Отправить</button>
+</form>
+
+<br><br>
+<a href="{% url 'chat' %}">Обновить</a><br>
+{% for i in show %}
+<br>
+ <br>
+Пользователь: {{ i.user }}
+<small>{{ i.date }}</small><br>
+Сообщение: <p style="background-color: #ffff0047"> {{ i.message }}</p>
+{% if user.username == 'admin' %}
+<form method="POST" action="{% url 'delete' %}">
+    {% csrf_token %}
+    <input type="hidden" name="id" value="{{ i.id }}">
+    <small><button type="submit">Удалить</button></small>
+
+</form>
+{%endif%}
+{% endfor %}
+<br><br>
+
+
+
+
+
+
+
+
 {% else %}
 <form method="post" action="{% url 'login' %}">
     {% csrf_token %}
